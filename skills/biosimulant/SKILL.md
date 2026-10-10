@@ -198,10 +198,12 @@ Use a one-run execution grant for that final managed run when the user requests
 uninterrupted execution.
 
 For ordinary summaries of a completed run, read the `workspace-results` JSON
-preview with `json_pointer: ""` and `include_content: false`. The server checks
+preview with `json_pointer: "/outputs"` and `include_content: false`. Some hosts
+drop empty string arguments, so use a non-empty pointer. The server checks
 the complete artifact's byte length and SHA-256 before returning original values.
 Follow the returned pointers for relevant subtrees; preserve units, array indices,
-sampling and partial flags. A preview is not a full dataset or an independent
+sampling and partial flags. Missing units are unknown, not dimensionless.
+A preview is not a full dataset or an independent
 client checksum check. Never infer results from worker diagnostics.
 
 When the user needs the complete artifact or independent verification, request
