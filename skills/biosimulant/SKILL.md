@@ -197,11 +197,19 @@ managed Run or Passport and never substitute for a requested final managed run.
 Use a one-run execution grant for that final managed run when the user requests
 uninterrupted execution.
 
-For a completed run, fetch the checksummed `workspace-results` artifact with
-`include_content: true`. Independently verify the decoded byte length and
-SHA-256 before interpreting bounded scientific fields. For an oversized
-artifact, use the short-lived owner-bound link and perform the same checks; do
-not retain or repeat the signed URL. Never infer results from worker diagnostics.
+For ordinary summaries of a completed run, read the `workspace-results` JSON
+preview with `json_pointer: ""` and `include_content: false`. The server checks
+the complete artifact's byte length and SHA-256 before returning original values.
+Follow the returned pointers for relevant subtrees; preserve units, array indices,
+sampling and partial flags. A preview is not a full dataset or an independent
+client checksum check. Never infer results from worker diagnostics.
+
+When the user needs the complete artifact or independent verification, request
+bytes with `include_content: true` or use the short-lived owner-bound download
+link, then verify byte length and SHA-256 with an available file-processing tool.
+Do not manually reconstruct large base64 blobs from conversation text. If that
+byte path is unavailable, explain the limit and use the verified preview for a
+bounded summary. Do not retain or repeat signed URLs.
 
 Do not describe successful execution or a `READY` Passport as universal
 scientific validity. Keep intended use, uncertainty, validation limits, source

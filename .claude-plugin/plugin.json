@@ -1,7 +1,7 @@
 {
   "name": "biosimulant",
   "displayName": "Biosimulant",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Research life sciences evidence, build private models and labs, run computational experiments, and inspect results.",
   "author": {
     "name": "Biosimulant",
