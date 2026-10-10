@@ -74,7 +74,7 @@ python3 <skill-dir>/scripts/validate_mrs.py specifications/<model-slug>/mrs.md
 Treat warnings as items to resolve or consciously retain in Draft/In review status. An Approved MRS must pass with no errors. Then perform a semantic review: confirm that the stated acceptance criteria answer the intended biological decision and that no implementation preference has silently become a scientific requirement.
 
 Before presenting an MRS as approval-ready, perform a whole-document consistency
-pass after the last edit. Search every section, table, revision note, constraint,
+review once editing is complete. Search every section, table, revision note, constraint,
 and model-type module for stale values or contradictory claims about units, time
 bases, conversion factors, parameter exposure, source mutation, intended use,
 approval state, and validation evidence. A validator exit of zero does not make
