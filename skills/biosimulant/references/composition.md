@@ -9,7 +9,7 @@ Before creating or renaming Labs, models, or child Labs, read
 identities, and instance aliases separate; preserve imported names and attribution.
 
 
-For durable account-backed work, use authenticated MCP to create a `composition` workspace or fork an exact Hub Lab. Inspect every component release before adding it. Use the local Biosimulant CLI (`biosimulant`) only for an intentionally local/offline Lab and do not use it to bypass Gateway controls.
+For durable account-backed work, use authenticated MCP to create a `composition` workspace or fork an exact Hub Lab. Inspect every component release before adding it. Use server validation; do not execute a local composition workflow.
 
 Use `component_add` only with exact `namespace/name@version` references and stable aliases. Use `connection_put` for explicit `alias.port` edges, `connection_delete` before component removal when needed, and `input_bind` for declared initial inputs. Use `manifest_patch` only for bounded Lab-level metadata or runtime changes.
 

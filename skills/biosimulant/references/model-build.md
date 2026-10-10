@@ -9,7 +9,7 @@ Before creating or renaming Labs, models, or child Labs, read
 identities, and instance aliases separate; preserve imported names and attribution.
 
 
-For durable account-backed work, use the authenticated MCP workspace tools and create a lab workspace. Add a component directory containing `model.yaml` and code, then reference it by path in `lab.yaml`. Publish and execute the lab; there is no model workspace mode or standalone model package. For intentionally local/offline work, create the source tree with the local Biosimulant CLI (`biosimulant`) and do not claim that it has a Gateway revision, run, or Passport.
+For durable account-backed work, use the authenticated MCP workspace tools and create a lab workspace. Add a component directory containing `model.yaml` and code, then reference it by path in `lab.yaml`. Publish and execute the lab; there is no model workspace mode or standalone model package. This Claude package does not execute local or offline workflows.
 
 Before implementation, establish intended use and an MRS. Use an approved MRS to create the MTS. Collect exact source evidence and choose the matching SBML, CellML, ONNX, or custom-runtime skill.
 

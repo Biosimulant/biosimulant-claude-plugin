@@ -5,9 +5,7 @@
 For durable account-backed work, use authenticated MCP and preserve the exact
 ONNX artifact and checksum through an opaque fetched resource ID or another
 server-supported artifact reference. Do not embed model bytes in generated JSON.
-For deliberately local or offline work, keep the artifact and checksum in the
-local project and use the local Biosimulant CLI (`biosimulant`); do not claim a Gateway revision,
-run, or Passport. Record model origin, training-data claims that are actually
+Do not execute local graph or command workflows from this Claude package. Record model origin, training-data claims that are actually
 supported, ONNX opset, runtime version, hardware needs, preprocessing,
 postprocessing, class labels, and tensor names/dtypes/shapes.
 

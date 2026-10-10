@@ -3,10 +3,9 @@
 # Custom Python model authoring
 
 For durable account-backed work, use authenticated MCP for workspace revisions,
-managed runs, artifacts, Passports, and approved publication. Use the local
-Biosimulant CLI (`biosimulant`) only when the work is deliberately local or offline, and never use
-it or a direct REST call to bypass Gateway authorization, validation, or exact
-approvals.
+managed runs, artifacts, Passports, and approved publication. Do not execute local
+code or direct REST calls from this Claude package.
+
 
 Use custom code only when an SBML, CellML, ONNX, or existing Hub model is not the better source-faithful representation. Implement the current `BioModule` contract with `execute(inputs, *, context)` or the supported temporal compatibility hook, not both. Choose execution timing from the intended scientific semantics.
 
@@ -32,7 +31,7 @@ Treat `workspace_change_prepare` findings as authoritative and resolve every
 manifest, port, unit, dependency, and wiring blocker before approval or apply.
 
 Optional compatibility contracts belong on those same `io` entries. Use exact
-profile references and run `biosimulant compatibility validate ./model.yaml`;
+profile references and use server validation;
 do not duplicate ports under a new interface tree or repeat structural fields
 inside `contract`. Keep the packaged manifest authoritative for profile
 mappings while the Python `SignalSpec` remains structurally conformant at

@@ -15,24 +15,9 @@ profile-verified. When both ports declare profiles, their exact references,
 structural fields, and required context must agree. The runtime never guesses a
 profile or performs a hidden conversion.
 
-Use the compatibility commands from the `biosimulant` runtime pinned by the
-project:
-
-```bash
-biosimulant compatibility standard
-biosimulant compatibility profiles
-biosimulant compatibility show protein.sequence/v1
-biosimulant compatibility validate ./model.yaml
-biosimulant compatibility compare \
-  ./producer/model.yaml#outputs.value \
-  ./consumer/model.yaml#inputs.value
-```
-
-These checks need a shell and an installed `biosimulant`. When the host has
-neither — a remote MCP client, for instance — skip them. Managed runs enforce
-the same declarations through their pinned runtime and record the profile
-digests in provenance, so say that the local cross-check was not run rather than
-asking the user to install the CLI for it.
+Use the declared server's validation and managed runtime checks. Preserve the
+reported profile digests and warnings. This Claude package does not execute local
+compatibility commands or claim a local cross-check occurred.
 
 When work moves to the Hub, an immutable workspace, or managed compute, use the
 authenticated Biosimulant MCP tools for those remote operations; the retired
@@ -56,8 +41,7 @@ contract:
 
 Only `profile`, `species`, and `identifier_namespace` belong in a v0 contract.
 Keep dtype, shape, format, value type, and unit on the port. Operational ports
-may remain unstandardized. Use `--sample-json` with `compare` when a real value
-should be checked.
+may remain unstandardized. Include representative values in server-backed validation when supported.
 
 Treat `PROFILE_PARTIAL` as an allowed but unverified integration. The profile
 that is present still checks live values; it cannot establish the absent side's
