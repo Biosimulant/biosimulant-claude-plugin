@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "biosimulant": {
+      "type": "http",
+      "url": "https://api.biosimulant.com/mcp"
+    }
+  }
+}

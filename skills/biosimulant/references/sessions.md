@@ -1,0 +1,16 @@
+# Durable session collaboration
+
+Use the connected server's live schema. The existing Biosimulant chat is the durable container; the external agent keeps reasoning and orchestration. These tools start no internal reasoning agent.
+
+1. Find the relevant chat with `session_list` or the workspace's `session_id`. Use `session_create` only for new work. `session_attach` maps this client's opaque conversation ID to the chat without granting permissions.
+2. Call `session_resume` before writes and after reconnecting. Its approved contract, current plan, criteria, pinned advisory guidance, exact revisions, validation receipts, resources, approvals, blockers and run budget are the authoritative context. Preserve the returned sequence cursor.
+3. Use `session_contract_prepare` to propose goal, intended use, scope, criteria and optional run-count cap. Supported automatic criteria bind a versioned Passport check to an exact workspace revision; use `human_review` for scientific judgment. Guidance snapshots are advisory and checksum-pinned. The human reviews the exact proposal in Biosimulant before `session_change_apply`.
+4. `session_plan_prepare` proposes ordered steps with earlier-step dependencies and criterion links. Apply only its own exact approval. A plan revision cannot change requirements. Contract revisions invalidate old plans and receipts.
+5. Start a step with `session_progress_update`. Governed Gateway workspace edits and managed runs require this client/user's approved current plan and active step. Keep using normal workspace prepare/apply, run approvals and execution grants. A session plan grants no compute or release authority.
+6. Research-only chats need no workspace. Use `session_workspace_create` only when files or a Lab are needed; it reuses the same chat and allocates no compute.
+7. `session_validation_submit` evaluates managed server-owned Passports, retaining exact subject and validator identities. Automatic validation additionally needs runs:read and passports:read. An imported report remains pending human review. Agents cannot submit authenticated human decisions or arbitrary passed statuses.
+8. `session_completion_check` establishes acceptance only when every required criterion passes, every step is done, the plan belongs to the current contract and the approved revisions remain active. Skips, failures, missing evidence and warnings do not pass. Governed publication repeats this gate and still requires its normal approval.
+
+Use stable idempotency keys and returned digests. If state is stale, refresh and prepare again rather than overriding the conflict. A shared chat allows authorized clients to read and propose their own plan, not to inherit another client's grant. Multiple clients share the server-enforced lifetime workspace run cap; failed and deleted runs consume slots. This cap is not a currency-spend authorization and does not cover unrelated release runs or hosting.
+
+Archive preserves scientific records and stops external writes until unarchived. Soft deletion retains records while making the chat inaccessible. General methodological guidance is advisory; approved session requirements and server permissions govern service operations. Biosimulant cannot control unrelated tools or the external host's chat.

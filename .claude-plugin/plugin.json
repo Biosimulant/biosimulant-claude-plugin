@@ -1,0 +1,13 @@
+{
+  "name": "biosimulant",
+  "displayName": "Biosimulant",
+  "version": "1.0.0",
+  "description": "Research life sciences evidence, build private models and labs, run computational experiments, and inspect results.",
+  "author": {
+    "name": "Biosimulant",
+    "email": "support@biosimulant.com",
+    "url": "https://www.biosimulant.com"
+  },
+  "homepage": "https://www.biosimulant.com/plugins",
+  "keywords": ["life sciences", "research", "simulation", "models", "biosimulant"]
+}

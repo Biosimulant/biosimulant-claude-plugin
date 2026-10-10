@@ -1,0 +1,6 @@
+interface:
+  display_name: "Create MTS"
+  short_description: "Design traceable model technical specifications"
+  default_prompt: "Use $create-mts to turn this approved MRS into a traceable technical specification."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Create MRS"
+  short_description: "Draft controlled model requirements specifications"
+  default_prompt: "Use $create-mrs to create an evidence-grounded MRS for this biological model."
+policy:
+  allow_implicit_invocation: true
