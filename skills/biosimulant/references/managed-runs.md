@@ -39,7 +39,7 @@ or claim that explanation wording changes a hosted result page's heading.
 5. Use the declared server for validation and bounded managed execution. Do not run local code or commands.
 6. Use `run_prepare` for each exact active revision. Report the input digest,
    compute class, maximum runtime, provider-cost estimate or class, findings,
-   `billing_mode: free_beta`, `user_charge: 0`, authorization mode, and
+   the returned billing mode, maximum credits, user-charge fields, authorization mode, and
    `requires_confirmation`. Compatibility is enforced by the pinned runtime;
    there is no separate compatibility plan.
 7. When the goal needs several setups compared rather than one run repeated — different inputs, different parameters, different revisions, or different labs entirely — use `experiment_prepare` with one arm per setup instead of preparing each run separately. Every arm is preflighted exactly as a lone run is, and findings are reported per arm. Give each arm a rationale saying why it is worth running or what it controls for; the parameter values alone will not explain the choice when the study is read back. Present the whole study once: its name, its goal, each arm and what that arm changes, and the total compute the single approval covers. After one explicit approval, call `experiment_create`, which opens the study and queues precisely those arms. Read it back with `experiment_get`: only completed runs contribute comparable values, an arm whose runs have not finished reports no metrics, and each arm remains an ordinary Run readable with `run_get`. A study is capped at twelve arms; propose separate studies rather than widening one past what a person can read. When the results suggest one more arm, do not start a second study: prepare that run with `run_prepare` carrying the study's `group_id`, its `group_arm` name and a `group_arm_rationale` saying what the earlier arms left unanswered, so the comparison stays whole.
@@ -109,7 +109,7 @@ order. Legacy Labs keep their established default behavior.
 Discovery reports configuration and account access, not guaranteed live
 capacity. Read the prepared plan's resolved provider, profile, CPU allocation,
 RAM, GPU type/count, timeout and provider-cost estimate before approval.
-Managed free-beta user charges are separate from infrastructure costs and
+User charges follow the returned billing policy; infrastructure costs are separate and
 release-run credit rates. Provider choice is platform-controlled; users need
 no Modal account, provider credentials or local repository. Hardware/provider
 configuration changes after preparation invalidate approval and require a new

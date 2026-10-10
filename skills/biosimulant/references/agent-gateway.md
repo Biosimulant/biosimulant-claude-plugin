@@ -32,7 +32,7 @@ simulations, document helpers or artifact processing.
 | `lab_list` | `hub:read` | List Labs you own, released or not, with exact release references. |
 | `lab_update`, `lab_visibility_set` | `packages:publish` | Rename or describe an owned Lab, list a public Lab in the Hub, or change who can see it. |
 | `workspace_list`, `file_list`, `file_get` | `workspaces:read` | List private workspaces; list and read files you uploaded (bounded, SHA-256 verified). |
-| `run_list`, `run_event_list` | `runs:read` | List your runs from MCP, the Developer API and Biosimulant Studio (`kind`: `managed`, `release` or `studio`); read a run's ordered log. Studio runs are read here and cancelled in Studio. |
+| `run_list`, `run_event_list` | `runs:read` | List your runs from MCP, the Developer API and Biosimulant Studio (`kind`: `managed`, `release` or `studio`); read a run's ordered log. Owned runs can be cancelled with run_cancel when the caller has control permission. |
 | `experiment_list` | `runs:read` | List studies with run totals. |
 | `experiment_update` | `runs:write` | Rename, re-goal, close or detach runs from a study; deletes nothing. |
 | `compute_profile_list` | `runs:read` | List compute sizes and how managed runs choose theirs. |
@@ -43,7 +43,7 @@ simulations, document helpers or artifact processing.
 | `workspace_get` | `workspaces:read` | Read an owned workspace revision. |
 | `workspace_create`, `workspace_change_prepare`, `workspace_change_apply` | `workspaces:write` | Create private workspaces and prepare/apply immutable revisions. |
 | `run_get`, `run_artifact_get` | `runs:read` | Read owned Gateway runs and artifacts. |
-| `run_prepare`, `run_create`, `run_cancel` | `runs:write` | Preflight, start, or cancel free-beta managed compute. |
+| `run_prepare`, `run_create`, `run_cancel` | `runs:write` | Preflight/start managed compute; cancel owned managed, Studio or release runs. Read actual billing fields. |
 | `run_grant_prepare`, `run_grant_create`, `run_grant_revoke` | `runs:write` | Prepare, explicitly approve, create, or revoke an exact bounded run grant. |
 | `run_grant_get` | `runs:read` | Read grant expiry, state, and remaining uses. |
 | `workflow_grant_prepare`, `workflow_grant_create`, `workflow_grant_revoke` | `runs:write` plus `packages:publish` | Prepare, create after one approval, or revoke an exact run/private-publication workflow grant. |
@@ -111,7 +111,7 @@ Successful tools return a versioned envelope with `request_id`, `data`, `warning
 - Capacity, timeout, or rate limit: report the typed limit and retry only when the response says it is retryable.
 - Host action unavailable: stop at the supported read/preparation boundary and provide the returned Studio link when available.
 
-During the authenticated free beta, Gateway managed runs return `billing_mode: free_beta` and `user_charge: 0`. They require direct exact approval or coverage by a previously approved active exact-scope grant because they consume infrastructure. The service may enforce runtime timeouts, concurrency, rate limits, provider capacity, and emergency compute shutdown.
+Read the exact plan's billing mode and maximum credits; free-beta examples are not a cost guarantee. Cancellation reports reserved, charged and settled credits without assuming zero cost. Team work uses the team's wallet. Approved compute remains bounded by live limits and grants.
 
 ## The Developer API is the same service
 
@@ -126,3 +126,6 @@ and `POST /v1/workspace-revisions`, `POST /v1/experiment-plans` and
 Grants are MCP-only because an API key already carries its owner's authority.
 Runs, studies, workspaces and files created on either surface appear on both.
 
+
+For resumable uploads, URL imports, bounded inspection, artifact pagination and
+connector inventory diagnostics, read [Files and datasets](files-and-datasets.md).

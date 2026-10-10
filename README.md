@@ -75,7 +75,9 @@ licenses and keep credentials out of prompts and files.
 All scientific execution and automated validation use the declared Biosimulant
 server. The requirements and technical-specification skills contain templates
 and review guidance, without executable local helpers. The package does not run
-local simulations, shell commands, or artifact-processing code.
+local simulations or scientific artifact-processing code. The optional local
+file-transfer helper only reads user-selected bytes, computes their checksum,
+and encodes upload chunks; it needs existing host filesystem/script access.
 
 Results are for research. Successful execution or an Evidence Passport does not
 establish clinical validity, efficacy, safety, or general model accuracy. Retain
@@ -92,3 +94,7 @@ sign-in, tool use across Claude clients, or approval by Anthropic. Before a publ
 listing, test the package in Claude and submit the remote connector and plugin
 bundle through Anthropic's developer portal. The plugin repository must be public
 before the listing goes live. No Claude directory submission is included in this ZIP.
+
+File ingestion and dataset inspection guidance is packaged in version 1.0.6.
+Use these tools only when exposed by the connected server. This source update
+does not deploy the backend or refresh an installed connector inventory.

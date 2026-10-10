@@ -2,14 +2,16 @@
 name: biosimulant
 description: Use optional scientific workflow guidance with Biosimulant's authenticated MCP tools for Hub discovery, evidence, immutable workspaces, model authoring, compatibility, composition, managed runs, Passports, and publication.
 metadata:
-  version: "2026.10.09"
+  version: "2026.10.10"
 ---
 
 # Biosimulant
 
 This Claude distribution executes scientific code and validation only through its
-declared Biosimulant connection. Do not run shell commands, local Python helpers,
-local simulations, or artifact-processing code. Draft text and code in the
+declared Biosimulant connection. Do not run local simulations, validation, or scientific artifact-processing
+code. The bundled file-transfer helper is a narrow exception for reading original
+file bytes, hashing them, and encoding upload chunks when the host already has
+filesystem/script access; it does not execute the data or scientific code. Draft text and code in the
 conversation and submit approved changes through the server. Commands mentioned
 in references describe other product surfaces; they are not execution instructions
 for this plugin. Use server-verified result previews and disclose when independent
@@ -84,10 +86,10 @@ route is available, disclose the discovery limitation and refresh the client's
 tool inventory. Do not create a duplicate project or replace missing evidence
 with recollections from another conversation.
 
-To use an uploaded file, read it with `file_get` and `include_content: true`,
-check the returned size and SHA-256, then copy small text data into a workspace
-through `workspace_change_prepare` (`file_put` with the content). Larger files
-stay in the user's library; say so rather than truncating them.
+For uploads, public dataset imports, spreadsheet inspection, or missing input
+files, read [Files and datasets](references/files-and-datasets.md). Use original
+bytes or source URLs and verified retained file references; never retype patient
+data. Check the live schemas before assuming these tools are available.
 
 ## Current guidance from the server
 

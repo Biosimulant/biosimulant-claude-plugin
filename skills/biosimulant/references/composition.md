@@ -153,7 +153,7 @@ order. Legacy Labs keep their established default behavior.
 Discovery reports configuration and account access, not guaranteed live
 capacity. Read the prepared plan's resolved provider, profile, CPU allocation,
 RAM, GPU type/count, timeout and provider-cost estimate before approval.
-Managed free-beta user charges are separate from infrastructure costs and
+User charges follow the returned billing policy; infrastructure costs are separate and
 release-run credit rates. Provider choice is platform-controlled; users need
 no Modal account, provider credentials or local repository. Hardware/provider
 configuration changes after preparation invalidate approval and require a new
