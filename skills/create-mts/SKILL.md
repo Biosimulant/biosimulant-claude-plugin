@@ -28,13 +28,10 @@ Prefer evidence over questions. Ask only about design decisions, operational con
 
 ## Create or revise
 
-For a new MTS, run:
-
-```bash
-python3 <skill-dir>/scripts/start_mts.py "<Model or Project Name>" --root <project-root>
-```
-
-Resolve `<skill-dir>` to the folder containing this `SKILL.md`. The command copies the protected template to `specifications/<model-slug>/mts.md` and refuses to overwrite an existing file. Edit only the working copy.
+For a new MTS, read [assets/master-template.md](assets/master-template.md) and
+draft a working copy in the conversation. Preserve the master template. This
+Claude package does not run local helpers or code; store a requested document
+through the declared Biosimulant connection after exact change approval.
 
 For a revision, preserve the MTS identifier lineage, update version/date/revision history, record the decision and alternatives, assess MRS impact and revalidation impact, and keep prior evidence traceable. If the intended use or any MRS-controlled requirement changes, return the issue to the MRS owner instead of changing it in the MTS.
 
@@ -104,13 +101,12 @@ Specify every model runtime package as an exact reproducibility pin using
 
 ## Validate
 
-Run:
-
-```bash
-python3 <skill-dir>/scripts/validate_mts.py specifications/<model-slug>/mts.md --mrs specifications/<model-slug>/mrs.md
-```
-
-An Approved MTS must pass with no errors. Then perform the required semantic review: compare every mapped acceptance criterion with the MRS, confirm that grouped mappings genuinely apply to every requirement, and verify that no technical choice changes the supported domain or evidentiary threshold.
+Review the document against [assets/master-template.md](assets/master-template.md),
+the authoring rules, and the source evidence. Check required sections, identifiers,
+traceability, unresolved items, approval state, and unchanged acceptance criteria.
+Use available server validation through the declared connection. Do not run local
+validators or claim a validator passed without returned evidence. A semantic
+review is separate from scientific validation.
 
 After the last implementation or evidence correction, reread the entire MRS and
 MTS rather than only the edited section. Reconcile all repeated runtime bounds,
@@ -120,11 +116,10 @@ artifacts and the evidence actually produced. Reject stale narrative even when
 both structural validators exit zero; compilation or import success must never
 be described as executed scientific acceptance evidence.
 
-Do not submit or describe a full MTS as approval-ready while this command
-reports any error, missing required section, missing mandatory MRS mapping, or
-unapproved MRS. Correct the document and rerun the validator to a zero exit
-status first. If the user has explicitly authorized approval of the MRS, record
-that approval and its receipt in the MRS before completing and validating the
+Do not submit or describe a full MTS as approval-ready while the review
+finds any error, missing required section, missing mandatory MRS mapping, or
+unapproved MRS. Correct the document and repeat the review first. If the user has explicitly authorized approval of the MRS, record
+that approval and its receipt in the MRS before completing and reviewing the
 MTS; otherwise stop at the non-authoritative skeleton or gap analysis.
 
 

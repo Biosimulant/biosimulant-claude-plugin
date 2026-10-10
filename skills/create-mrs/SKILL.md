@@ -36,13 +36,10 @@ If the available study design cannot support the requested identification, valid
 
 ## Create or revise
 
-For a new MRS, run:
-
-```bash
-python3 <skill-dir>/scripts/start_mrs.py "<Model or Project Name>" --root <project-root>
-```
-
-Resolve `<skill-dir>` to the folder containing this `SKILL.md`. The command copies the protected template to `specifications/<model-slug>/mrs.md` and refuses to overwrite an existing file. The master asset is immutable; edit only the working copy.
+For a new MRS, read [assets/master-template.md](assets/master-template.md) and
+draft a working copy in the conversation. Preserve the master template. This
+Claude package does not run local helpers or code; store a requested document
+through the declared Biosimulant connection after exact change approval.
 
 For a revision, edit the existing MRS instead of starting from the template. Preserve its identifier lineage, increment the version according to project policy, update `Last revised` and revision history, assess approval impact, and retain decisions or superseded content needed for auditability. Changes to intended use, endpoint, domain, ground truth, required inputs, output interpretation, decision thresholds, or acceptance criteria require reapproval.
 
@@ -65,19 +62,18 @@ When working through the Biosimulant Agent Gateway, draft and validate the MRS w
 
 ## Validate
 
-Run:
-
-```bash
-python3 <skill-dir>/scripts/validate_mrs.py specifications/<model-slug>/mrs.md
-```
-
-Treat warnings as items to resolve or consciously retain in Draft/In review status. An Approved MRS must pass with no errors. Then perform a semantic review: confirm that the stated acceptance criteria answer the intended biological decision and that no implementation preference has silently become a scientific requirement.
+Review the document against [assets/master-template.md](assets/master-template.md),
+the authoring rules, and the source evidence. Check required sections, identifiers,
+traceability, unresolved items, approval state, and unchanged acceptance criteria.
+Use available server validation through the declared connection. Do not run local
+validators or claim a validator passed without returned evidence. A semantic
+review is separate from scientific validation.
 
 Before presenting an MRS as approval-ready, perform a whole-document consistency
 review once editing is complete. Search every section, table, revision note, constraint,
 and model-type module for stale values or contradictory claims about units, time
 bases, conversion factors, parameter exposure, source mutation, intended use,
-approval state, and validation evidence. A validator exit of zero does not make
+approval state, and validation evidence. A structural review does not make
 contradictory prose acceptable. When the source uses an undeclared time basis,
 keep source time and any evaluation-time convention explicitly distinct in every
 occurrence.

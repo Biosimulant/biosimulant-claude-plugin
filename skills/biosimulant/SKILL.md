@@ -7,6 +7,15 @@ metadata:
 
 # Biosimulant
 
+This Claude distribution executes scientific code and validation only through its
+declared Biosimulant connection. Do not run shell commands, local Python helpers,
+local simulations, or artifact-processing code. Draft text and code in the
+conversation and submit approved changes through the server. Commands mentioned
+in references describe other product surfaces; they are not execution instructions
+for this plugin. Use server-verified result previews and disclose when independent
+client verification is unavailable.
+
+
 Labs hold executable scientific work. Existing Biosimulant chat sessions can hold durable research questions, requirements, plans and evidence without a Lab. When users request a model, use the lab workflow. A lab contains executable model components described by `model.yaml`, coordinated by `lab.yaml`.
 
 For session activity and the research notes shared by Labs and sessions, read
@@ -130,10 +139,10 @@ Read only the reference needed for the request:
 - Curated biological evidence: [references/biology-research.md](references/biology-research.md)
 - Author model components inside lab workspaces: [references/model-build.md](references/model-build.md)
 - Model composition and wiring: [references/composition.md](references/composition.md)
-- Model compatibility profiles and local validation: [references/model-compatibility.md](references/model-compatibility.md)
+- Model compatibility profiles and server validation: [references/model-compatibility.md](references/model-compatibility.md)
 - Passport review and publication: [references/qualification-publication.md](references/qualification-publication.md)
 - SBML, CellML, ONNX, or custom Python: read the matching file under [references/runtimes](references/runtimes)
-- MCP setup, MCP-versus-CLI choice, and errors: [references/agent-gateway.md](references/agent-gateway.md)
+- MCP setup and errors: [references/agent-gateway.md](references/agent-gateway.md)
 
 Use the separate `create-mrs` skill for requirements and acceptance evidence,
 and `create-mts` for an implementation specification based on an approved MRS.
@@ -185,18 +194,6 @@ envelope and per-user scoping (for example `GET /v1/runs`, `POST /v1/run-plans`,
 then `POST /v1/runs` with the approved plan), so work started on either surface
 is visible on the other. An agent connected over MCP stays on MCP.
 
-Local iteration is an optimisation, never a prerequisite. Prefer it only when
-all three hold, tested in this order: this host can run shell commands;
-`biosimulant` is already on PATH; and `biosimulant labs capabilities <lab>
---json` reports `local_supported: true`. When any check fails, continue on MCP
-without comment. Never ask the user to install the CLI, run `pip install
-biosimulant`, or run `biosimulant auth login` in order to complete a request
-that MCP can serve — MCP needs no CLI and no registry token, and the CLI's token
-does not authenticate MCP. Local runs are local evidence only: they create no
-managed Run or Passport and never substitute for a requested final managed run.
-Use a one-run execution grant for that final managed run when the user requests
-uninterrupted execution.
-
 For ordinary summaries of a completed run, read the `workspace-results` JSON
 preview with `json_pointer: "/outputs"` and `include_content: false`. Some hosts
 drop empty string arguments, so use a non-empty pointer. The server checks
@@ -206,12 +203,10 @@ sampling and partial flags. Missing units are unknown, not dimensionless.
 A preview is not a full dataset or an independent
 client checksum check. Never infer results from worker diagnostics.
 
-When the user needs the complete artifact or independent verification, request
-bytes with `include_content: true` or use the short-lived owner-bound download
-link, then verify byte length and SHA-256 with an available file-processing tool.
-Do not manually reconstruct large base64 blobs from conversation text. If that
-byte path is unavailable, explain the limit and use the verified preview for a
-bounded summary. Do not retain or repeat signed URLs.
+When the user needs the complete artifact or independent client verification,
+explain that this plugin provides server-verified bounded previews. It does not
+execute local processing or reconstruct large base64 blobs. Provide the returned
+Studio result link when available; do not retain or repeat signed download URLs.
 
 Do not describe successful execution or a `READY` Passport as universal
 scientific validity. Keep intended use, uncertainty, validation limits, source

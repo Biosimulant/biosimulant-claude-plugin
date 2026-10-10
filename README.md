@@ -72,10 +72,10 @@ approved sources described in the skills through Biosimulant's service, and may
 read or author the scientific files you explicitly ask to use. Respect source
 licenses and keep credentials out of prompts and files.
 
-The requirements and technical-specification skills also include readable Python
-helpers to start and validate documents. They read templates and write or inspect
-local specification files only when used for a requested document workflow; they
-do not run automatically at installation or send data over the network.
+All scientific execution and automated validation use the declared Biosimulant
+server. The requirements and technical-specification skills contain templates
+and review guidance, without executable local helpers. The package does not run
+local simulations, shell commands, or artifact-processing code.
 
 Results are for research. Successful execution or an Evidence Passport does not
 establish clinical validity, efficacy, safety, or general model accuracy. Retain
