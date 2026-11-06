@@ -2,15 +2,12 @@
 
 ![Biosimulant](assets/logo.png)
 
-Research life sciences evidence, build private models and labs, run computational
-experiments, and inspect results in a conversation with Claude. Start with a
-research question, find published evidence or your existing work, prepare a model
-or experiment, and read its saved results with their assumptions and limitations.
+**Run, record, and revisit life sciences experiments.**
 
-The package includes three skills: Biosimulant's research workflow, model
-requirements, and model technical specifications. They guide the work; your
-Biosimulant account controls access. Responses use plain English while preserving
-scientific quantities, uncertainty, and approval requirements.
+Start a life sciences investigation in Claude. Find evidence, work with data and
+models, and run computational experiments with your approval. Biosimulant keeps
+the setup, results, and research notes together in Studio so you can check what
+happened, rerun it, or pick up where you left off.
 
 ## Install in Claude
 
@@ -37,7 +34,7 @@ For a development copy, extract this ZIP and start Claude Code with:
 claude --plugin-dir /absolute/path/to/biosimulant
 ```
 
-Use `/mcp` to authenticate the Biosimulant connection. The three skills load from
+Use `/mcp` to authenticate the Biosimulant connection. The four skills load from
 the plugin's `skills` directory. A direct connection without the bundled skills is:
 
 ```sh
@@ -46,11 +43,16 @@ claude mcp add --transport http biosimulant https://api.biosimulant.com/mcp
 
 ## Try it
 
-- Find a published physiology lab and explain its assumptions and limitations.
-- Summarize my existing life sciences project, including drafts and completed runs.
-- Draft requirements for an exploratory model using only the evidence I supplied.
-- Prepare a simulation from a selected published lab and show its inputs and cost.
-- Read my completed experiment's actual saved results and explain what they establish.
+| Skill | Try asking |
+| --- | --- |
+| Start or continue an investigation | “Pick up my protein-binding study. What have we tried, and what's still open?” |
+| Build or adapt a model | “Find a published model I can adapt. What does it assume, and what would I need to change?” |
+| Run or repeat an experiment | “Prepare a rerun with the saved settings. Show me the inputs and estimated cost before I approve it.” |
+| Inspect and compare results | “Compare my two completed runs. What changed in the setup, and what do the saved outputs support?” |
+
+For example, open a saved Boltz-2 investigation, review the predicted structure
+and scores alongside the exact setup in Studio, then ask Claude to prepare a
+rerun. Use your own saved run or follow the [Biosimulant walkthrough](https://www.biosimulant.com/#demo).
 
 The assistant must inspect the live tool inventory and exact records before
 claiming success. It must ask for approval of the exact plan before running
@@ -73,8 +75,8 @@ read or author the scientific files you explicitly ask to use. Respect source
 licenses and keep credentials out of prompts and files.
 
 All scientific execution and automated validation use the declared Biosimulant
-server. The requirements and technical-specification skills contain templates
-and review guidance, without executable local helpers. The package does not run
+server. The model-building skill includes optional requirements and technical
+planning templates. The package does not run
 local simulations or scientific artifact-processing code. The optional local
 file-transfer helper only reads user-selected bytes, computes their checksum,
 and encodes upload chunks; it needs existing host filesystem/script access.
@@ -89,12 +91,6 @@ source attribution, units, assumptions, uncertainty, and intended-use limits.
 
 ## Distribution status
 
-This is an initial development package. Local validation does not prove successful
-sign-in, tool use across Claude clients, or approval by Anthropic. Before a public
-listing, test the package in Claude and submit the remote connector and plugin
-bundle through Anthropic's developer portal. The plugin repository must be public
-before the listing goes live. No Claude directory submission is included in this ZIP.
-
-File ingestion and dataset inspection guidance is packaged in version 1.0.6.
-Use these tools only when exposed by the connected server. This source update
-does not deploy the backend or refresh an installed connector inventory.
+This repository supplies the Biosimulant package for the Claude directory.
+You can use the manual connection above while the directory listing is under
+review. Available tools depend on the connected Biosimulant account and service.

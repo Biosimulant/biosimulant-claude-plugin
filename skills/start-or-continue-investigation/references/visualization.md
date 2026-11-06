@@ -1,13 +1,12 @@
 # Visualization delivery
 
-Almost every Lab and scientific result model should present a meaningful visualization of
-its computed results. Keep typed scientific outputs as well. Infrastructure-only components
-may omit a visualization with an explicit reason. Do not generate decorative charts or
-invent data to satisfy a count.
+Provide a visualization when the user requests one or it helps explain computed results.
+Keep typed outputs as well. File-only and infrastructure tasks need no chart or opt-out
+justification. Do not generate decorative charts or invent data to satisfy a count.
 
 Before authoring in Studio Chat or MCP, read `get_biosimulant_authoring_contract` with
 `topics: ["visualization"]`. It returns the versioned catalog, payload examples, limits,
-asset lifecycle and acceptance rules. Both agent surfaces share this contract.
+asset lifecycle and technical validation rules. Both agent surfaces share this contract.
 
 | Render | Choose it for | Data contract |
 | --- | --- | --- |
@@ -33,16 +32,18 @@ The catalog uses the common portable subset across local Labs Serve, Web and Des
 Some clients also accept richer legacy payloads; that does not make those payloads portable.
 Custom renderer names require actual client registration and are outside the v1 contract.
 
-## Requirements and implementation
+## Implementation
 
-The MRS records the user's question, expected view, source output, units, uncertainty,
-caveats and usability acceptance. The MTS selects render types, the owning module,
-typed connections, execution lifecycle, bounded previews, asset retention and verification.
+Choose render types, source outputs, units, typed connections, execution lifecycle,
+bounded previews and retained assets to serve the user's requested outputs. Create or
+revise MRS/MTS documents only when explicitly requested; they are not prerequisites
+for authoring, execution or publication.
 A table is useful for exact data but should accompany a plot when a plot makes the result
 clearer. Select a meaningful image overlay for image analysis, scatter for prediction
 validation, heatmap for spatial/matrix data and 3D for structures.
 
-Declare requirements at the top level of `lab.yaml`:
+Existing Labs may declare visualization deliverables at the top level of `lab.yaml`.
+Preserve that metadata when editing a Lab, for example:
 
 ```yaml
 visualization:
@@ -53,10 +54,10 @@ visualization:
       min_count: 1
 ```
 
-Names are actual composed runtime aliases, including child prefixes. A Lab may explicitly
-opt out using `visualization: {schema_version: "1", opt_out_reason: "Explain why no user-facing visual helps"}`.
-Declare required views in the parent Lab even when produced by a child. Older Labs with no
-contract remain runnable; new authoring must either declare deliverables or justify an opt-out.
+Names are actual composed runtime aliases, including child prefixes. Preserve existing
+`opt_out_reason` metadata and parent declarations for views produced by a child.
+Visualization declarations and opt-out reasons are not required for new authoring,
+execution or publication.
 
 Implement `visualize()` on the result component using actual computed state. It returns one
 spec or a list. It must not run inference again or advance the science. A finite downstream
@@ -79,7 +80,7 @@ The v1 contract bounds each spec to 2 MB, each Lab to 64 visuals and chart data 
 points/cells per series/matrix. Web artifact image previews are limited to 10 MB; larger
 files remain downloadable. Retention limits still apply to the full artifact.
 
-## End-to-end acceptance
+## Delivery verification
 
 Run the actual composition and inspect results JSON: typed outputs plus grouped `visuals`.
 The SDK adds a `visualization` delivery report; invalid v1 payloads and `visualize()` errors
@@ -87,11 +88,11 @@ produce bounded diagnostics while scientific outputs remain accessible. Legacy e
 remain compatible, with diagnostics where their payload is not portable.
 
 Verify chosen types, nonempty data, units, plotted values against typed outputs, labels,
-retained files, reopening and exports. Visual count alone is insufficient. Required invalid
-or missing visuals fail trusted Studio qualification and exact-revision MCP publication.
-Managed run Passports independently validate payloads and require artifact-backed visuals
-to refer to completed artifacts. Existing Labs with no declared contract retain their legacy
-qualification behavior. Delivery checks establish usable outputs, not biological accuracy.
+retained files, reopening and exports. Report invalid or missing requested visuals and
+rendering errors as delivery results, preserving accessible typed outputs and files.
+Artifact-backed visuals must refer to completed retained artifacts. These technical checks
+do not impose a scientific qualification or publication gate.
 
 Studio `create_visualization` creates an ad-hoc chat chart resource. It does not implement
-reusable `BioModule.visualize()` behavior and does not satisfy Lab delivery requirements.
+reusable `BioModule.visualize()` behavior; use that method when the requested view must
+be part of a reusable Lab.

@@ -21,16 +21,11 @@ already immutable in the source and cannot be addressed, keep it unexposed; an
 upstream component may validate a locked reference value but must not claim it
 mutated the SBML.
 
-Document species/parameter mappings, public ports, units, event semantics, solver assumptions, initialization, and supported perturbations in the MTS. Add tests for source parsing, declared inputs/outputs, units, representative trajectories, conservation or invariant checks where scientifically applicable, and failure behavior. Pin literature or database evidence separately. Report solver or model limitations in caveats.
-
-When opting into model compatibility, bind exact profiles to the existing `io`
-ports and declare SBML entity identifiers, compartments, quantity semantics,
-units, time basis, and event/state lifecycle in `contract`. Do not infer missing
-source annotations merely to make a profile validate.
+Document species/parameter mappings, public ports, units, event semantics, solver assumptions, initialization, and supported perturbations in the model documentation when useful. Add tests for source parsing, declared inputs/outputs, units, representative trajectories, conservation or invariant checks where scientifically applicable, and failure behavior. Pin literature or database evidence separately. Report solver or model limitations in caveats.
 
 Treat missing source units as missing metadata. Preserve the source convention
 or require an explicit, cited conversion; do not relabel an unannotated SBML
-quantity as nM, nM/minute, or another physical unit. Native-runtime parity must
+quantity as nM, nM/minute, or another physical unit. When requested, native-runtime parity can
 execute an independent reference path against the immutable source and compare
 the resulting trajectory. A value asserted by the adapter under test is not an
 independent parity result.
@@ -48,17 +43,6 @@ member `ExecutionPolicy.ONCE_BEFORE_RUN`; never use the invalid quoted uppercase
 string `"ONCE_BEFORE_RUN"`.
 
 
-## Visualization deliverables
 
-Before authoring, call `get_biosimulant_authoring_contract` with topic `visualization`.
-The complete catalog contains timeseries, bar, scatter, heatmap, graph, table, image,
-structure3d and text, including payload examples, limits and retained artifact rules.
-Almost every scientific Lab needs a useful visual of actual computed outputs; choose
-the type by the user's question rather than always emitting a table. Record expected
-views, source outputs, units and caveats in the MRS; record render/schema, owning module,
-typed wiring, lifecycle, artifact retention and executable checks in the MTS.
-Implement reusable `BioModule.visualize()` and declare `lab.yaml` visualization requirements
-(or a justified opt-out for infrastructure-only work). Inspect actual composed results,
-check plotted values against typed outputs, and verify artifacts and reopening. Missing
-or invalid required views block qualification/publication. Ad-hoc Studio chat charts
-do not satisfy this contract. Historical Labs without a declaration remain compatible.
+
+Scientific qualification is removed. Legacy profile metadata is descriptive. Documents, evidence, reference fixtures and visualizations are not platform prerequisites. Preserve real execution errors, scoped authorization and files. File-only work needs no chart. For 0.0.38+, report inner failures with ExecutionOutcome through report_execution_outcome.

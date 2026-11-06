@@ -10,19 +10,68 @@ The production Streamable HTTP endpoint is:
 https://api.biosimulant.com/mcp
 ```
 
-Use Claude's existing Biosimulant connector and complete browser sign-in and
-consent. The consent screen must be on `studio.biosimulant.com`, and the issuer
-must be `https://api.biosimulant.com`. Do not paste tokens, authorization codes,
-cookies or signed download links into prompts or files.
+With a current Codex CLI, add the server and complete OAuth:
+
+```bash
+codex mcp add biosimulant \
+  --url https://api.biosimulant.com/mcp
+
+codex mcp login biosimulant \
+  --scopes hub:read,biology:read,workspaces:read,workspaces:write,runs:read,runs:write,passports:read,packages:publish,community:read,offline_access
+```
+
+With a Claude client that supports remote MCP servers:
+
+```bash
+claude mcp add --transport http biosimulant https://api.biosimulant.com/mcp
+```
+
+Then run `/mcp` in the client to complete sign-in.
+
+Connecting is browser consent only. It needs no `pip install`, no `biosimulant`
+CLI, and no registry token; a CLI token does not authenticate MCP.
+
+The browser consent screen must be on `studio.biosimulant.com`; `chat.biosimulant.com` is a compatibility hostname that redirects to Studio. The OAuth issuer must be `https://api.biosimulant.com`. Do not paste access tokens, refresh tokens, authorization codes, session cookies, or signed artifact links into prompts or files. If the installed Codex CLI does not have `mcp add`, `mcp login`, and `mcp list`, update the Codex client before continuing.
+
+Install skills into `$HOME/.agents/skills` for user-wide discovery or `.agents/skills` at the repository/current-working-directory boundary for a project-scoped installation. Keep each skill as `<skill-name>/SKILL.md`; do not flatten package files.
 
 All MCP access is authenticated. Public Hub web pages may remain anonymous, but anonymous MCP initialization, tool listing, and tool calls must fail.
 
-## Execution surface
+## Choose the execution surface
 
-Use the declared authenticated Biosimulant connection for workspaces, validation,
-managed compute, saved results and publication. Draft scientific documents and
-code in the conversation. This Claude package does not execute local commands,
-simulations, document helpers or artifact processing.
+| Need | Surface |
+| --- | --- |
+| Search or inspect the live Hub | Authenticated MCP |
+| Search approved biological sources or fetch checksum-pinned records/artifacts | Authenticated MCP |
+| Create durable private workspaces and immutable revisions | Authenticated MCP |
+| Run managed Biosimulant compute and recover it after disconnecting | Authenticated MCP |
+| Retrieve signed Passports or prepare/execute publication | Authenticated MCP |
+| Edit and run a deliberately local project without account-backed state | Local Biosimulant CLI (`biosimulant`) |
+| Iterate quickly on a local source tree the host can already run | Local Biosimulant CLI, when the gate below passes |
+| General scientific reasoning and code/model drafting | The host agent, guided by skills |
+
+### The local-iteration gate
+
+Managed MCP compute is the execution surface for any result that must be
+durable, recoverable, Passport-bearing, or publishable. Local iteration is an
+optimisation on top of that, never a prerequisite for it.
+
+Prefer a local run only when all three hold, tested in this order:
+
+1. This host can run shell commands.
+2. `biosimulant` is already on PATH.
+3. `biosimulant labs capabilities <lab> --json` reports `local_supported: true`.
+
+When any check fails, continue on MCP without comment. A remote MCP host has no
+shell and fails at step 1; that is ordinary, not a blocker worth reporting.
+
+Never tell the user to `pip install biosimulant`, install the CLI, or run
+`biosimulant auth login` in order to complete a request MCP can serve. The CLI's
+registry token and the MCP authorization are different credentials for different
+services: installing one does not connect the other. If local iteration would
+have helped but is unavailable, say so in one line and proceed on MCP.
+
+Do not route a direct local-agent request through Studio Chat. MCP is a typed service boundary, not another general chat model. A skill may draft MRS/MTS text, code, tests, or manifests; the Gateway validates and commits those files through an immutable change plan.
 
 ## Tools and protected scopes
 
@@ -41,7 +90,7 @@ simulations, document helpers or artifact processing.
 | `skill_list`, `skill_get` | any | The currently published Biosimulant skills. |
 | `biology_search`, `biology_fetch` | `biology:read` | Search approved adapters and persist exact fetched evidence as opaque resources. |
 | `workspace_get` | `workspaces:read` | Read an owned workspace revision. |
-| `workspace_create`, `workspace_change_prepare`, `workspace_change_apply` | `workspaces:write` | Create private workspaces and prepare/apply immutable revisions. |
+| `workspace_create` and the action-specific `workspace_*_prepare` / `workspace_*_apply` pairs | `workspaces:write` | Create private workspaces and prepare/apply immutable revisions. |
 | `run_get`, `run_artifact_get` | `runs:read` | Read owned Gateway runs and artifacts. |
 | `run_prepare`, `run_create`, `run_cancel` | `runs:write` | Preflight/start managed compute; cancel owned managed, Studio or release runs. Read actual billing fields. |
 | `run_grant_prepare`, `run_grant_create`, `run_grant_revoke` | `runs:write` | Prepare, explicitly approve, create, or revoke an exact bounded run grant. |
@@ -59,7 +108,8 @@ created them.
 The effective action is the intersection of OAuth scope, user/object authorization, host capability, feature availability, and object state. There is no subscription or credit-balance gate for Agent Gateway beta access.
 
 Compatibility profiles are distributed with the pinned `biosimulant` runtime,
-not through Agent Gateway tools. Do not run local compatibility commands from this plugin. Managed runs enforce the same declarations
+not through Agent Gateway tools. Use `biosimulant compatibility` locally to
+inspect, validate, and compare them. Managed runs enforce the same declarations
 through their pinned runtime and record the used profile digests in provenance.
 
 Searchable biology source IDs currently exposed by the Gateway schema are `pubmed`, `europe_pmc`, `uniprot`, `ols`, `reactome`, `biomodels`, `physiome`, `chembl`, `pubchem`, `cellosaurus`, and `clinvar`. Select one to three per search. Never supply arbitrary URLs, headers, credentials, or unsupported source parameters.
@@ -70,12 +120,12 @@ Searchable biology source IDs currently exposed by the Gateway schema are `pubme
 2. Draft bounded content locally in the agent context.
 3. Call the relevant `*_prepare` tool with an idempotency key.
 4. Show the returned base revision, normalized diff/request, validation findings, blockers, expiry, side effects, compute bounds when applicable, and `plan_sha256`.
-5. Obtain explicit approval for that exact plan.
+5. Follow the current session execution_policy. When requires_confirmation is true, present review_url/action_approvals approval_url and wait for the authenticated human decision in Biosimulant on this exact proposal. A digest or chat answer alone cannot authorize it.
 6. Call the paired apply/create/execute tool with the unmodified plan ID and digest.
 7. Save the durable resource ID and read it back.
 
 Never interpret preparation as execution or approval. When several exact plans
-are ready together, show them together and obtain one consolidated user answer.
+are ready together, show them together for authenticated review. Use a bounded workflow grant only when its exact consolidated scope is separately human-approved in Biosimulant.
 Re-prepare after a stale base, changed input, changed compute bound, changed
 version/visibility, expired plan, or digest mismatch. Replaying an already
 executed plan should return the same resource rather than duplicate a revision,
@@ -83,7 +133,7 @@ run, charge, grant, or release.
 
 For exact managed runs that should privately publish after successful
 verification, prepare each run and private publication, then bundle up to ten
-pairs with `workflow_grant_prepare`. After one explicit approval, call
+pairs with `workflow_grant_prepare`. After one authenticated human approval in Biosimulant, call
 `workflow_grant_create`, execute the listed runs with its ID, and publish each
 private release only with the matching completed run ID. The server requires a
 durable, checksummed, non-empty results artifact and rejects public releases,
@@ -93,7 +143,7 @@ when a requested grant fails.
 
 For an uninterrupted final managed run, prepare the exact run first, then use
 `run_grant_prepare` with `max_runs: 1` and a short lifetime. Show and obtain one
-explicit approval for that grant plan before `run_grant_create`. The returned
+authenticated human approval in Biosimulant for that grant plan before `run_grant_create`. The returned
 grant authorizes only its exact revision, scientific request, quality profile,
 compute bounds, user, and OAuth client. Pass it to `run_create`, or to a later
 identical `run_prepare` when the original operation plan expired. A matching

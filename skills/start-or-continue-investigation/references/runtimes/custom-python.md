@@ -3,39 +3,29 @@
 # Custom Python model authoring
 
 For durable account-backed work, use authenticated MCP for workspace revisions,
-managed runs, artifacts, Passports, and approved publication. Do not execute local
-code or direct REST calls from this Claude package.
-
+managed runs, artifacts, Passports, and approved publication. Use the local
+Biosimulant CLI (`biosimulant`) only when the work is deliberately local or offline, and never use
+it or a direct REST call to bypass Gateway authorization, validation, or exact
+approvals.
 
 Use custom code only when an SBML, CellML, ONNX, or existing Hub model is not the better source-faithful representation. Implement the current `BioModule` contract with `execute(inputs, *, context)` or the supported temporal compatibility hook, not both. Choose execution timing from the intended scientific semantics.
 
-Custom code is not permission to manufacture missing scientific inputs. Confirm that required fixtures, initial conditions, event schedules, parameters, measurements, uncertainty definitions, and expected failure semantics are present. If any are necessary to the requested result but absent, stop before implementation or execution and request them explicitly; do not relabel partial prompt details as a complete synthetic fixture.
-
-Do not implement a runnable exploratory or “abstaining” custom model as a substitute for an unsupported requested validation, parameter-identification, prediction, or selection claim. First return the sufficiency gap and a proposed reduced intended use; implementation requires the user's explicit choice of that different objective.
-
-Document equations/algorithm, parameters, units, initial conditions, stochastic seeds, dependencies, numerical method, input/output contracts, supported domain, and failure behavior in the MTS. Pin every external scientific source. Add unit, contract, representative-output, edge-case, and reproducibility tests. For an MCP workspace, submit code, tests, and manifests only through bounded `file_put`/`manifest_patch` operations in a prepared immutable change; never embed opaque scientific artifacts as generated text. Keep secrets and network credentials out of files. Mark handwritten or mixed-source scientific logic for manual review and state assumptions as caveats.
+Document equations/algorithm, parameters, units, initial conditions, stochastic seeds, dependencies, numerical method, input/output contracts, supported domain, and failure behavior in the model documentation when useful. Preserve external source identities when used. Add unit, contract, representative-output, edge-case, and reproducibility tests. For an MCP workspace, submit code, tests, and manifests only through bounded `file_put`/`manifest_patch` operations in a prepared immutable change; never embed opaque scientific artifacts as generated text. Keep secrets and network credentials out of files. Keep supplied source identities and assumptions with the work.
 
 Each custom model `model.yaml` must include `schema_version: "2.0"`, `standard`
 (use `other` for a custom Python model), package identity, `biosim.entrypoint`, a
 positive `biosim.communication_step`, canonical `io.inputs` and `io.outputs`,
 and exactly pinned `runtime.dependencies.packages`. Every package requirement
 must use `name==version`; managed validation rejects ranges such as
-`biosimulant>=0.0.33,<1` and unpinned names. Use `biosimulant==0.0.33` when the
+`biosimulant>=0.0.33,<1` and unpinned names. Use an exact runtime version, such as `biosimulant==0.0.38` when the
 model depends on the current Agent Gateway runtime. Do not use top-level `inputs`,
 `outputs`, or `dependencies` as substitutes for that schema, and do not infer
 that the Lab-level `runtime.communication_step` satisfies the model-level
 requirement. Input entries declare `name`, `signal_type`, and applicable
 `dtype`, `shape`, `schema`, and `accepted_units`; output entries declare `name`,
 `signal_type`, and applicable `dtype`, `shape`, `schema`, and `emitted_unit`.
-Treat `workspace_change_prepare` findings as authoritative and resolve every
+Treat `workspace_*_prepare` findings as authoritative and resolve every
 manifest, port, unit, dependency, and wiring blocker before approval or apply.
-
-Optional compatibility contracts belong on those same `io` entries. Use exact
-profile references and use server validation;
-do not duplicate ports under a new interface tree or repeat structural fields
-inside `contract`. Keep the packaged manifest authoritative for profile
-mappings while the Python `SignalSpec` remains structurally conformant at
-runtime.
 
 Every newly authored class that implements `execute(inputs, *, context)` must
 declare a runtime-valid policy. Prefer importing `ExecutionPolicy` from `biosim`
@@ -124,20 +114,11 @@ evaluate the declared tolerance from those calculated values.
 With the version-matched Biosimulant runtime, Lab JSON results preserve terminal signals under
 `outputs.<module-alias>.<port>` with their signal type, declared `SignalSpec`,
 timestamp, and value. Put the scientific summary on an explicit terminal output
-port rather than relying on stdout. Almost every scientific model/Lab should implement useful `visualize()` output from computed state; infrastructure-only components may record an explicit opt-out reason. It supplements typed result outputs.
+port rather than relying on stdout. Still print short `flush=True` progress
+lines (inputs loaded, each major phase, about every 10% of a long loop, done)
+so a watcher can see the run is alive; keep them near 200 lines per run. Almost every scientific model/Lab should implement useful `visualize()` output from computed state; infrastructure-only components may record an explicit opt-out reason. It supplements typed result outputs.
 
 
-## Visualization deliverables
 
-Before authoring, call `get_biosimulant_authoring_contract` with topic `visualization`.
-The complete catalog contains timeseries, bar, scatter, heatmap, graph, table, image,
-structure3d and text, including payload examples, limits and retained artifact rules.
-Almost every scientific Lab needs a useful visual of actual computed outputs; choose
-the type by the user's question rather than always emitting a table. Record expected
-views, source outputs, units and caveats in the MRS; record render/schema, owning module,
-typed wiring, lifecycle, artifact retention and executable checks in the MTS.
-Implement reusable `BioModule.visualize()` and declare `lab.yaml` visualization requirements
-(or a justified opt-out for infrastructure-only work). Inspect actual composed results,
-check plotted values against typed outputs, and verify artifacts and reopening. Missing
-or invalid required views block qualification/publication. Ad-hoc Studio chat charts
-do not satisfy this contract. Historical Labs without a declaration remain compatible.
+
+Scientific qualification is removed. Legacy profile metadata is descriptive. Documents, evidence, reference fixtures and visualizations are not platform prerequisites. Preserve real execution errors, scoped authorization and files. File-only work needs no chart. For 0.0.38+, report inner failures with ExecutionOutcome through report_execution_outcome.

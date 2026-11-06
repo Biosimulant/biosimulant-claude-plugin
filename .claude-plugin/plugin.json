@@ -1,8 +1,8 @@
 {
   "name": "biosimulant",
   "displayName": "Biosimulant",
-  "version": "1.0.6",
-  "description": "Research life sciences evidence, build private models and labs, run computational experiments, and inspect results.",
+  "version": "1.1.0",
+  "description": "Start a life sciences investigation in your AI assistant. Find evidence, work with data and models, and run computational experiments with your approval. Biosimulant keeps the setup, results, and research notes together in Studio so you can check what happened, rerun it, or pick up where you left off.",
   "author": {
     "name": "Biosimulant",
     "email": "support@biosimulant.com",

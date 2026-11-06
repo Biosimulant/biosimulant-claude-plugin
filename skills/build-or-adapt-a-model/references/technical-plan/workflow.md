@@ -1,11 +1,4 @@
----
-name: create-mts
-description: Create or revise a Modeling Technical Specification (MTS) that implements an approved Model Requirements Specification for a biological or computational model. Use when defining architecture, methods, interfaces, verification, reproducibility, delivery, Biosimulant fit, and operations; do not use to invent or weaken MRS acceptance requirements.
-metadata:
-  version: "2026.09.12.5"
----
-
-# Create MTS
+# Plan how to build and test the model
 
 Translate an approved MRS into a traceable implementation contract. The MTS explains how the requirements will be satisfied; it does not replace, reinterpret, or weaken them.
 
@@ -35,7 +28,7 @@ through the declared Biosimulant connection after exact change approval.
 
 For a revision, preserve the MTS identifier lineage, update version/date/revision history, record the decision and alternatives, assess MRS impact and revalidation impact, and keep prior evidence traceable. If the intended use or any MRS-controlled requirement changes, return the issue to the MRS owner instead of changing it in the MTS.
 
-When working through the Biosimulant Agent Gateway, draft and validate the MTS with this skill, then submit its contents through `technical_spec_set` in `workspace_change_prepare`. The Gateway commit is an immutable storage revision, not approval of the MTS or satisfaction of the MRS. Show the prepared diff and digest before `workspace_change_apply`, and preserve the document's own review state and traceability.
+When working through the Biosimulant Agent Gateway, draft and validate the MTS with this skill, then submit its contents through `workspace_technical_spec_set_prepare`. The Gateway commit is an immutable storage revision, not approval of the MTS or satisfaction of the MRS. Follow the preview's `requires_confirmation` decision and retain its exact diff and digest before `workspace_technical_spec_set_apply`, and preserve the document's own review state and traceability.
 
 ## Build the traceable design
 

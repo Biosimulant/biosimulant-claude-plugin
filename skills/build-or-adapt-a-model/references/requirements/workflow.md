@@ -1,11 +1,4 @@
----
-name: create-mrs
-description: Create or revise a Model Requirements Specification (MRS) for a biological or computational model from scientific briefs, assay/data evidence, and intended-use decisions. Use when defining what the model must do and what evidence will establish acceptance; do not use for implementation design or an MTS.
-metadata:
-  version: "2026.10.04"
----
-
-# Create MRS
+# Define what the model must do
 
 Create a controlled requirements document whose source of truth is the scientific purpose, intended use, supported domain, required behavior, validation evidence, and acceptance criteria. Do not let a preferred algorithm, runtime, or existing implementation redefine those requirements.
 
@@ -43,7 +36,7 @@ through the declared Biosimulant connection after exact change approval.
 
 For a revision, edit the existing MRS instead of starting from the template. Preserve its identifier lineage, increment the version according to project policy, update `Last revised` and revision history, assess approval impact, and retain decisions or superseded content needed for auditability. Changes to intended use, endpoint, domain, ground truth, required inputs, output interpretation, decision thresholds, or acceptance criteria require reapproval.
 
-When working through the Biosimulant Agent Gateway, draft and validate the MRS with this skill, then submit its contents through `requirements_set` in `workspace_change_prepare`. The Gateway commit is an immutable storage revision, not scientific approval of the MRS. Show the prepared diff and digest before `workspace_change_apply`, and retain the MRS approval state inside the document.
+When working through the Biosimulant Agent Gateway, draft and validate the MRS with this skill, then submit its contents through `workspace_requirements_set_prepare`. The Gateway commit is an immutable storage revision, not scientific approval of the MRS. Follow the preview's `requires_confirmation` decision and retain its exact diff and digest before `workspace_requirements_set_apply`, and retain the MRS approval state inside the document.
 
 ## Authoring rules
 
