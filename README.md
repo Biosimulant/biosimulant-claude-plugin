@@ -76,10 +76,9 @@ licenses and keep credentials out of prompts and files.
 
 All scientific execution and automated validation use the declared Biosimulant
 server. The model-building skill includes optional requirements and technical
-planning templates. The package does not run
-local simulations or scientific artifact-processing code. The optional local
-file-transfer helper only reads user-selected bytes, computes their checksum,
-and encodes upload chunks; it needs existing host filesystem/script access.
+planning templates. File transfers use existing host file capabilities, a public
+source URL, or a file uploaded through Biosimulant Studio. The directory package
+contains workflow instructions, JSON configuration, and PNG brand images.
 
 Results are for research. Successful execution or an Evidence Passport does not
 establish clinical validity, efficacy, safety, or general model accuracy. Retain
