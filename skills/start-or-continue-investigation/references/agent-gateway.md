@@ -7,14 +7,14 @@ Use this reference when connecting Biosimulant, selecting MCP versus local CLI, 
 The production Streamable HTTP endpoint is:
 
 ```text
-https://api.biosimulant.com/mcp
+https://mcp.biosimulant.com/mcp
 ```
 
 With a current Codex CLI, add the server and complete OAuth:
 
 ```bash
 codex mcp add biosimulant \
-  --url https://api.biosimulant.com/mcp
+  --url https://mcp.biosimulant.com/mcp
 
 codex mcp login biosimulant \
   --scopes hub:read,biology:read,workspaces:read,workspaces:write,runs:read,runs:write,passports:read,packages:publish,community:read,offline_access
@@ -23,7 +23,7 @@ codex mcp login biosimulant \
 With a Claude client that supports remote MCP servers:
 
 ```bash
-claude mcp add --transport http biosimulant https://api.biosimulant.com/mcp
+claude mcp add --transport http biosimulant https://mcp.biosimulant.com/mcp
 ```
 
 Then run `/mcp` in the client to complete sign-in.

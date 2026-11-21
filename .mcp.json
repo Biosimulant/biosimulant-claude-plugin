@@ -2,7 +2,7 @@
   "mcpServers": {
     "biosimulant": {
       "type": "http",
-      "url": "https://api.biosimulant.com/mcp"
+      "url": "https://mcp.biosimulant.com/mcp"
     }
   }
 }

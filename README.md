@@ -22,7 +22,7 @@ happened, rerun it, or pick up where you left off.
 
 You can also add the connection alone under **Customize → Connectors → Add custom
 connector**, using the name **Biosimulant** and URL
-`https://api.biosimulant.com/mcp`. This gives Claude access to the service without
+`https://mcp.biosimulant.com/mcp`. This gives Claude access to the service without
 installing the packaged workflow skills. Use one connection to avoid duplicate tools.
 Workspace owners may need to enable custom plugins and connectors first.
 
@@ -38,7 +38,7 @@ Use `/mcp` to authenticate the Biosimulant connection. The four skills load from
 the plugin's `skills` directory. A direct connection without the bundled skills is:
 
 ```sh
-claude mcp add --transport http biosimulant https://api.biosimulant.com/mcp
+claude mcp add --transport http biosimulant https://mcp.biosimulant.com/mcp
 ```
 
 ## Try it
@@ -62,7 +62,7 @@ data. Public publication requires separate approval.
 ## Access and data
 
 The only configured connection is the HTTPS Biosimulant service at
-`https://api.biosimulant.com/mcp`, using Streamable HTTP and OAuth. Each person
+`https://mcp.biosimulant.com/mcp`, using Streamable HTTP and OAuth. Each person
 signs in to their own account; this package contains no API keys, shared passwords,
 tokens, local server, installation scripts, or hooks. It does not alter Claude's
 permission settings. Revoke access through your Biosimulant account when needed.
